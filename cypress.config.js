@@ -1,11 +1,11 @@
 const cucumber = require("cypress-cucumber-preprocessor").default;
-const { defineConfig } = require("cypress");
+const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
   e2e: {
+    experimentalStudio: true, // 👈 habilita o Studio
     setupNodeEvents(on, config) {
-      on ("file:preprocessor", cucumber());
-    },
-    specPattern: "cypress/e2e/step_definitions/*.feature"
-  },
-});
+      // Você pode deixar isso vazio se não precisar de eventos
+    },
+  },
+})
