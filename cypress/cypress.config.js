@@ -7,8 +7,4 @@ module.exports = defineConfig({
     },
   },
 });
-{
-  "compilerOptions": {
-    "types": ["cypress", "cypress-file-upload"]
-  }
-}
+

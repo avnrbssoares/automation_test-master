@@ -1,0 +1,110 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2025-07-08T03:29:40.533Z",
+    "end": "2025-07-08T03:29:49.785Z",
+    "duration": 9252,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "196460f5-1e43-45a5-8a35-8b642c6e030a",
+      "title": "",
+      "fullFile": "cypress\\e2e\\fatura_digital.cy.js",
+      "file": "cypress\\e2e\\fatura_digital.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "cef6cfac-b772-40b9-8ceb-040433168f6b",
+          "title": "template spec",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "passes",
+              "fullTitle": "template spec passes",
+              "timedOut": null,
+              "duration": 7673,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": "{\n  \"title\": \"cypress-mochawesome-reporter-screenshots\",\n  \"value\": [\n    [\n      \"\\\\fatura_digital.cy.js\\\\template spec -- passes (failed).png\"\n    ]\n  ]\n}",
+              "code": "cy.visit('https://faturadigitalhml.unimeduberlandia.coop.br/index.php'); // Acessa o site da Fatura Digital HML\ncy.get('#usuario').should('be.visible').type(Cypress.env('FATURA_DIGITAL_USER')); // Digita o usuário\ncy.get('#senha').should('be.visible').type(Cypress.env('FATURA_DIGITAL_PASSWORD')); // Digita a senha\ncy.get('.btn-primary').should('be.enabled').click(); // Clica no botão de login\ncy.get(':nth-child(2) > #dropdownSubMenu1', {\n  timeout: 10000\n}).should('be.visible').click(); // Clica no menu \"Envio de Boleto\"\ncy.get(':nth-child(3) > #dropdownSubMenu2', {\n  timeout: 10000\n}).should('be.visible').click(); // Clica no submenu\ncy.get(':nth-child(3) > #dropdownSubMenu2', {\n  timeout: 10000\n}).get('select').select('3'); // Clica na opção desejada\ncy.get('[aria-labelledby=\"dropdownSubMenu1\"] > :nth-child(3) > .dropdown-menu > :nth-child(4) > .dropdown-item');",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `select`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `select`, but never found it.\n    at Context.eval (webpack://automation_test-master/./cypress/e2e/fatura_digital.cy.js:9:66)",
+                "diff": null
+              },
+              "uuid": "f28aae2c-5efc-4d7e-9e9a-56663d5d7e1d",
+              "parentUUID": "cef6cfac-b772-40b9-8ceb-040433168f6b",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "f28aae2c-5efc-4d7e-9e9a-56663d5d7e1d"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 7673,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "report",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress\\reports\\.jsons",
+        "reportFilename": "report",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
