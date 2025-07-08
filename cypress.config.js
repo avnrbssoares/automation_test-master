@@ -1,11 +1,18 @@
-const cucumber = require("cypress-cucumber-preprocessor").default;
-const { defineConfig } = require('cypress')
+const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   e2e: {
-    experimentalStudio: true, // 👈 habilita o Studio
     setupNodeEvents(on, config) {
-      // Você pode deixar isso vazio se não precisar de eventos
-    },
-  },
-})
+      // Aquí agregas los plugins o configuraciones adicionales
+      require('cypress-mochawesome-reporter/plugin')(on);
+    },
+    reporter: 'cypress-mochawesome-reporter',
+    reporterOptions: {
+      reportDir: 'cypress/reports',
+      reportFilename: 'report',
+      overwrite: false,
+      html: true,
+      json: true,
+    },
+  },
+});

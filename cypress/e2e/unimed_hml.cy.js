@@ -7,6 +7,7 @@ describe('Fluxo de Login - Ambiente HML Unimed', () => {
     cy.get('#dominio').should('be.visible').select('6'); // CSC UNI
     cy.get('.btn-block').should('be.enabled').click(); // 
 
+    //Cenário de Carta Permanência
     cy.get('.sidebar-menu', { timeout: 10000 }).should('be.visible'); // Verifica se o menu lateral foi carregado 
 
     cy.get('.sidebar-menu > :nth-child(5) > [href="#"] > :nth-child(2)') // Acessa o menu "Atendimento"
