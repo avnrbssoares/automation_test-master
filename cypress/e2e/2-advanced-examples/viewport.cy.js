@@ -1,58 +1,41 @@
 /// <reference types="cypress" />
-context('Viewport', () => {
+
+// Testes de manipulação de viewport no Cypress
+describe('Viewport', () => {
   beforeEach(() => {
-    cy.visit('https://example.cypress.io/commands/viewport')
-  })
+    cy.visit('https://example.cypress.io/commands/viewport');
+  });
 
-  it('cy.viewport() - set the viewport size and dimension', () => {
-    // https://on.cypress.io/viewport
+  it('deve definir o tamanho e dimensão do viewport', () => {
+    // Verifica navbar visível no padrão
+    cy.get('#navbar').should('be.visible');
 
-    cy.get('#navbar').should('be.visible')
-    cy.viewport(320, 480)
+    // Define viewport pequeno e verifica navbar colapsada
+    cy.viewport(320, 480);
+    cy.get('#navbar').should('not.be.visible');
+    cy.get('.navbar-toggle').should('be.visible').click();
+    cy.get('.nav').find('a').should('be.visible');
 
-    // the navbar should have collapse since our screen is smaller
-    cy.get('#navbar').should('not.be.visible')
-    cy.get('.navbar-toggle').should('be.visible').click()
-    cy.get('.nav').find('a').should('be.visible')
+    // Define viewport super grande
+    cy.viewport(2999, 2999);
 
-    // lets see what our app looks like on a super large screen
-    cy.viewport(2999, 2999)
+    // Testa presets de dispositivos
+    const devices = [
+      'macbook-15', 'macbook-13', 'macbook-11',
+      'ipad-2', 'ipad-mini', 'iphone-6+', 'iphone-6',
+      'iphone-5', 'iphone-4', 'iphone-3'
+    ];
+    devices.forEach((device) => {
+      cy.viewport(device);
+      cy.wait(200);
+    });
 
-    // cy.viewport() accepts a set of preset sizes
-    // to easily set the screen to a device's width and height
+    // Testa orientação portrait e landscape
+    cy.viewport('ipad-2', 'portrait');
+    cy.wait(200);
+    cy.viewport('iphone-4', 'landscape');
+    cy.wait(200);
 
-    // We added a cy.wait() between each viewport change so you can see
-    // the change otherwise it is a little too fast to see :)
-
-    cy.viewport('macbook-15')
-    cy.wait(200)
-    cy.viewport('macbook-13')
-    cy.wait(200)
-    cy.viewport('macbook-11')
-    cy.wait(200)
-    cy.viewport('ipad-2')
-    cy.wait(200)
-    cy.viewport('ipad-mini')
-    cy.wait(200)
-    cy.viewport('iphone-6+')
-    cy.wait(200)
-    cy.viewport('iphone-6')
-    cy.wait(200)
-    cy.viewport('iphone-5')
-    cy.wait(200)
-    cy.viewport('iphone-4')
-    cy.wait(200)
-    cy.viewport('iphone-3')
-    cy.wait(200)
-
-    // cy.viewport() accepts an orientation for all presets
-    // the default orientation is 'portrait'
-    cy.viewport('ipad-2', 'portrait')
-    cy.wait(200)
-    cy.viewport('iphone-4', 'landscape')
-    cy.wait(200)
-
-    // The viewport will be reset back to the default dimensions
-    // in between tests (the  default can be set in cypress.config.{js|ts})
-  })
-})
+    // O viewport é resetado entre os testes (configurável no cypress.config)
+  });
+});

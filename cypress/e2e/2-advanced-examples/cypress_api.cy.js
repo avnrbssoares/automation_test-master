@@ -1,184 +1,130 @@
 /// <reference types="cypress" />
 
-context('Cypress APIs', () => {
+// Testes das APIs do Cypress
+describe('Cypress APIs', () => {
   context('Cypress.Commands', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
 
-    // https://on.cypress.io/custom-commands
-
-    it('.add() - create a custom command', () => {
-      Cypress.Commands.add('console', {
-        prevSubject: true,
-      }, (subject, method) => {
-      // the previous subject is automatically received
-      // and the commands arguments are shifted
-
-        // allow us to change the console method used
-        method = method || 'log'
-
-        // log the subject to the console
-        console[method]('The subject is', subject)
-
-        // whatever we return becomes the new subject
-        // we don't want to change the subject so
-        // we return whatever was passed in
-        return subject
-      })
-
+    it('deve criar um comando customizado', () => {
+      Cypress.Commands.add('console', { prevSubject: true }, (subject, method = 'log') => {
+        console[method]('The subject is', subject);
+        return subject;
+      });
       cy.get('button').console('info').then(($button) => {
-      // subject is still $button
-      })
-    })
-  })
+        expect($button).to.exist;
+      });
+    });
+  });
 
   context('Cypress.Cookies', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
 
-    // https://on.cypress.io/cookies
-    it('.debug() - enable or disable debugging', () => {
-      Cypress.Cookies.debug(true)
-
-      // Cypress will now log in the console when
-      // cookies are set or cleared
-      cy.setCookie('fakeCookie', '123ABC')
-      cy.clearCookie('fakeCookie')
-      cy.setCookie('fakeCookie', '123ABC')
-      cy.clearCookie('fakeCookie')
-      cy.setCookie('fakeCookie', '123ABC')
-    })
-  })
+    it('deve habilitar debug de cookies', () => {
+      Cypress.Cookies.debug(true);
+      cy.setCookie('fakeCookie', '123ABC');
+      cy.clearCookie('fakeCookie');
+      cy.setCookie('fakeCookie', '123ABC');
+      cy.clearCookie('fakeCookie');
+      cy.setCookie('fakeCookie', '123ABC');
+    });
+  });
 
   context('Cypress.arch', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
-
-    it('Get CPU architecture name of underlying OS', () => {
-    // https://on.cypress.io/arch
-      expect(Cypress.arch).to.exist
-    })
-  })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
+    it('deve obter arquitetura do sistema operacional', () => {
+      expect(Cypress.arch).to.exist;
+    });
+  });
 
   context('Cypress.config()', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
-
-    it('Get and set configuration options', () => {
-    // https://on.cypress.io/config
-      let myConfig = Cypress.config()
-
-      expect(myConfig).to.have.property('animationDistanceThreshold', 5)
-      expect(myConfig).to.have.property('baseUrl', null)
-      expect(myConfig).to.have.property('defaultCommandTimeout', 4000)
-      expect(myConfig).to.have.property('requestTimeout', 5000)
-      expect(myConfig).to.have.property('responseTimeout', 30000)
-      expect(myConfig).to.have.property('viewportHeight', 660)
-      expect(myConfig).to.have.property('viewportWidth', 1000)
-      expect(myConfig).to.have.property('pageLoadTimeout', 60000)
-      expect(myConfig).to.have.property('waitForAnimations', true)
-
-      expect(Cypress.config('pageLoadTimeout')).to.eq(60000)
-
-      // this will change the config for the rest of your tests!
-      Cypress.config('pageLoadTimeout', 20000)
-
-      expect(Cypress.config('pageLoadTimeout')).to.eq(20000)
-
-      Cypress.config('pageLoadTimeout', 60000)
-    })
-  })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
+    it('deve obter e alterar opções de configuração', () => {
+      const myConfig = Cypress.config();
+      expect(myConfig).to.include({
+        animationDistanceThreshold: 5,
+        baseUrl: null,
+        defaultCommandTimeout: 4000,
+        requestTimeout: 5000,
+        responseTimeout: 30000,
+        viewportHeight: 660,
+        viewportWidth: 1000,
+        pageLoadTimeout: 60000,
+        waitForAnimations: true,
+      });
+      expect(Cypress.config('pageLoadTimeout')).to.eq(60000);
+      Cypress.config('pageLoadTimeout', 20000);
+      expect(Cypress.config('pageLoadTimeout')).to.eq(20000);
+      Cypress.config('pageLoadTimeout', 60000);
+    });
+  });
 
   context('Cypress.dom', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
-
-    // https://on.cypress.io/dom
-    it('.isHidden() - determine if a DOM element is hidden', () => {
-      let hiddenP = Cypress.$('.dom-p p.hidden').get(0)
-      let visibleP = Cypress.$('.dom-p p.visible').get(0)
-
-      // our first paragraph has css class 'hidden'
-      expect(Cypress.dom.isHidden(hiddenP)).to.be.true
-      expect(Cypress.dom.isHidden(visibleP)).to.be.false
-    })
-  })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
+    it('deve verificar se elemento está oculto', () => {
+      const hiddenP = Cypress.$('.dom-p p.hidden').get(0);
+      const visibleP = Cypress.$('.dom-p p.visible').get(0);
+      expect(Cypress.dom.isHidden(hiddenP)).to.be.true;
+      expect(Cypress.dom.isHidden(visibleP)).to.be.false;
+    });
+  });
 
   context('Cypress.env()', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
-
-    // We can set environment variables for highly dynamic values
-
-    // https://on.cypress.io/environment-variables
-    it('Get environment variables', () => {
-    // https://on.cypress.io/env
-    // set multiple environment variables
-      Cypress.env({
-        host: 'veronica.dev.local',
-        api_server: 'http://localhost:8888/v1/',
-      })
-
-      // get environment variable
-      expect(Cypress.env('host')).to.eq('veronica.dev.local')
-
-      // set environment variable
-      Cypress.env('api_server', 'http://localhost:8888/v2/')
-      expect(Cypress.env('api_server')).to.eq('http://localhost:8888/v2/')
-
-      // get all environment variable
-      expect(Cypress.env()).to.have.property('host', 'veronica.dev.local')
-      expect(Cypress.env()).to.have.property('api_server', 'http://localhost:8888/v2/')
-    })
-  })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
+    it('deve obter e definir variáveis de ambiente', () => {
+      Cypress.env({ host: 'veronica.dev.local', api_server: 'http://localhost:8888/v1/' });
+      expect(Cypress.env('host')).to.eq('veronica.dev.local');
+      Cypress.env('api_server', 'http://localhost:8888/v2/');
+      expect(Cypress.env('api_server')).to.eq('http://localhost:8888/v2/');
+      expect(Cypress.env()).to.include({ host: 'veronica.dev.local', api_server: 'http://localhost:8888/v2/' });
+    });
+  });
 
   context('Cypress.log', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
-
-    it('Control what is printed to the Command Log', () => {
-    // https://on.cypress.io/cypress-log
-    })
-  })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
+    it('deve controlar o que é impresso no Command Log', () => {
+      // Exemplo de uso do Cypress.log
+      Cypress.log({ name: 'custom log', message: 'Testando log customizado' });
+    });
+  });
 
   context('Cypress.platform', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
-
-    it('Get underlying OS name', () => {
-    // https://on.cypress.io/platform
-      expect(Cypress.platform).to.be.exist
-    })
-  })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
+    it('deve obter nome do sistema operacional', () => {
+      expect(Cypress.platform).to.exist;
+    });
+  });
 
   context('Cypress.version', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
-
-    it('Get current version of Cypress being run', () => {
-    // https://on.cypress.io/version
-      expect(Cypress.version).to.be.exist
-    })
-  })
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
+    it('deve obter versão atual do Cypress', () => {
+      expect(Cypress.version).to.exist;
+    });
+  });
 
   context('Cypress.spec', () => {
     beforeEach(() => {
-      cy.visit('https://example.cypress.io/cypress-api')
-    })
-
-    it('Get current spec information', () => {
-    // https://on.cypress.io/spec
-    // wrap the object so we can inspect it easily by clicking in the command log
-      cy.wrap(Cypress.spec).should('include.keys', ['name', 'relative', 'absolute'])
-    })
-  })
-})
+      cy.visit('https://example.cypress.io/cypress-api');
+    });
+    it('deve obter informações do spec atual', () => {
+      cy.wrap(Cypress.spec).should('include.keys', ['name', 'relative', 'absolute']);
+    });
+  });
+});

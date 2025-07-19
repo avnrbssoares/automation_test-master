@@ -1,30 +1,26 @@
 /// <reference types="cypress" />
-context('Waiting', () => {
+
+// Testes de espera (wait) no Cypress
+describe('Waiting', () => {
   beforeEach(() => {
-    cy.visit('https://example.cypress.io/commands/waiting')
-  })
-  // BE CAREFUL of adding unnecessary wait times.
+    cy.visit('https://example.cypress.io/commands/waiting');
+  });
+
+  // Evite adicionar esperas desnecessárias!
   // https://on.cypress.io/best-practices#Unnecessary-Waiting
 
-  // https://on.cypress.io/wait
-  it('cy.wait() - wait for a specific amount of time', () => {
-    cy.get('.wait-input1').type('Wait 1000ms after typing')
-    cy.wait(1000)
-    cy.get('.wait-input2').type('Wait 1000ms after typing')
-    cy.wait(1000)
-    cy.get('.wait-input3').type('Wait 1000ms after typing')
-    cy.wait(1000)
-  })
+  it('deve esperar um tempo específico com cy.wait()', () => {
+    cy.get('.wait-input1').type('Wait 1000ms after typing');
+    cy.wait(1000);
+    cy.get('.wait-input2').type('Wait 1000ms after typing');
+    cy.wait(1000);
+    cy.get('.wait-input3').type('Wait 1000ms after typing');
+    cy.wait(1000);
+  });
 
-  it('cy.wait() - wait for a specific route', () => {
-    // Listen to GET to comments/1
-    cy.intercept('GET', '**/comments/*').as('getComment')
-
-    // we have code that gets a comment when
-    // the button is clicked in scripts.js
-    cy.get('.network-btn').click()
-
-    // wait for GET comments/1
-    cy.wait('@getComment').its('response.statusCode').should('be.oneOf', [200, 304])
-  })
-})
+  it('deve esperar uma rota específica com cy.wait()', () => {
+    cy.intercept('GET', '**/comments/*').as('getComment');
+    cy.get('.network-btn').click();
+    cy.wait('@getComment').its('response.statusCode').should('be.oneOf', [200, 304]);
+  });
+});

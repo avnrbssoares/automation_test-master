@@ -1,33 +1,30 @@
 /// <reference types="cypress" />
 
-context('Misc', () => {
+// Testes diversos do Cypress
+describe('Misc', () => {
   beforeEach(() => {
-    cy.visit('https://example.cypress.io/commands/misc')
-  })
-
-  it('cy.exec() - execute a system command', () => {
-    // Exemplo seguro para todos os ambientes
-    cy.exec('echo Jane Lane')
-      .its('stdout').should('contain', 'Jane Lane');
-    // Comandos de sistema específicos removidos para evitar falhas em Windows
+    cy.visit('https://example.cypress.io/commands/misc');
   });
 
-  it('cy.focused() - get the DOM element that has focus', () => {
-    // https://on.cypress.io/focused
-    cy.get('.misc-form').find('#name').click()
-    cy.focused().should('have.id', 'name')
+  it('deve executar um comando do sistema com cy.exec()', () => {
+    cy.exec('echo Jane Lane')
+      .its('stdout').should('contain', 'Jane Lane');
+    // Comandos específicos de sistema removidos para compatibilidade
+  });
 
-    cy.get('.misc-form').find('#description').click()
-    cy.focused().should('have.id', 'description')
-  })
+  it('deve obter o elemento DOM com foco usando cy.focused()', () => {
+    cy.get('.misc-form').find('#name').click();
+    cy.focused().should('have.id', 'name');
+    cy.get('.misc-form').find('#description').click();
+    cy.focused().should('have.id', 'description');
+  });
 
-  context('Cypress.Screenshot', function () {
-    it('cy.screenshot() - take a screenshot', () => {
-      // https://on.cypress.io/screenshot
-      cy.screenshot('my-image')
-    })
+  describe('Cypress.Screenshot', () => {
+    it('deve tirar um screenshot com cy.screenshot()', () => {
+      cy.screenshot('my-image');
+    });
 
-    it('Cypress.Screenshot.defaults() - change default config of screenshots', function () {
+    it('deve alterar configuração padrão de screenshot', () => {
       Cypress.Screenshot.defaults({
         blackout: ['.foo'],
         capture: 'viewport',
@@ -35,16 +32,15 @@ context('Misc', () => {
         scale: false,
         disableTimersAndAnimations: true,
         screenshotOnRunFailure: true,
-        onBeforeScreenshot () { },
-        onAfterScreenshot () { },
-      })
-    })
-  })
+        onBeforeScreenshot() {},
+        onAfterScreenshot() {},
+      });
+    });
+  });
 
-  it('cy.wrap() - wrap an object', () => {
-    // https://on.cypress.io/wrap
+  it('deve envolver um objeto com cy.wrap()', () => {
     cy.wrap({ foo: 'bar' })
       .should('have.property', 'foo')
-      .and('include', 'bar')
-  })
-})
+      .and('include', 'bar');
+  });
+});
